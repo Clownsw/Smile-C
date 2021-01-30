@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2021/1 
+      劫持某网易云音乐 
       
       
       |
@@ -95,50 +95,168 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2021</span>
-          </h2>
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">劫持某网易云音乐</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-01-30 16:14:32
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="-前言">前言</h1>
+<h6 id="2021-01-30-16-18-15-">2021-01-30 16:18:15 星期六  本文章仅学习、研究，无疑冒犯!</h6>
+<h1 id="-准备">准备</h1>
+<ol>
+<li>Vistual Studio 2019 (C++程序编写)</li>
+<li>dllexportview (查看导出函数)</li>
+<li>IDA (反汇编分析)</li>
+</ol>
+<h1 id="-">分析</h1>
+<ol>
+<li><p>查看其根目录文件</p>
+</li>
+<li><p>查找目标文件
+ 使用dllexportview工具查看根目录DLL导出函数</p>
+</li>
+<li>选定目标
+ libWinDA.dll (导出函数最少)
+ <img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/76b4173bc0f631b41b2707b844242599.PNG" alt="libWinDA.dll" title="libWinDA.dll"></li>
+<li>拖入IDA分析函数参数
+ AppEvent<pre><code> void AppEvent (const unsigned __int16* a1, int a2);
+</code></pre><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/1b7c2d48b08cb0fc320ba0631bbc36ba.PNG" alt="">
+ AppExit<pre><code> void AppExit (void);
+</code></pre><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/8c360b9d896ce009021e3e0ffd160d40.PNG" alt="">
+ AppLaunch<pre><code> void AppLaunch (const unsigned __int16* a1, const unsigned __int16* a2, const unsigned __int16* a3);
+</code></pre><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/225b085a94152ce7b68e1fdeed084170.PNG" alt="">
+ AppSetUserID<pre><code> void AppSetUserID (const unsigned __int16* a1);
+</code></pre><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/5101fee0c0ab9d12205b206b9ebb10d3.PNG" alt=""><h1 id="开始">开始</h1>
+libWinDA.dll-&gt;4个导出函数的参数了</li>
+</ol>
+<p>我们要怎么做呢？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/e83025667a10c47155447696a553485c.png" alt=""></p>
+<p>网易云-&gt;libWinDA.dll(我们的)-&gt; 这里可以执行我们想要执行的代码 -&gt;调用AppEvent-&gt;libWinDA.dll(官方的)-&gt;AppEvent</p>
+<h1 id="代码">代码</h1>
+<pre><code>#include &quot;pch.h&quot;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+<p>typedef void (<em>Event)(const unsigned __int16</em> a1, int a2);<br>typedef void (<em>Exit)(void);<br>typedef void (<em>Launch)(const unsigned __int16</em> a1, const unsigned __int16* a2, const unsigned __int16</em> a3);<br>typedef void (<em>SetUserID)(const unsigned __int16</em> a1);</p>
+<p>HMODULE hMoudle_ = NULL;<br>HMODULE libWinDA = NULL;<br>Event AppEvent_&#123;&#125;;<br>Exit AppExit_&#123;&#125;;<br>Launch AppLaunch_&#123;&#125;;<br>SetUserID AppSetUserID_&#123;&#125;;</p>
+<p>DWORD WINAPI Init(LPVOID);</p>
+<p>BOOL APIENTRY DllMain( HMODULE hModule,<br>                       DWORD  ul_reason_for_call,<br>                       LPVOID lpReserved<br>                     )<br>&#123;<br>    switch (ul_reason_for_call)<br>    &#123;<br>    case DLL_PROCESS_ATTACH:</p>
+<pre><code>    hMoudle_ = hModule;
+    CreateThread(NULL, NULL, Init, NULL, NULL, NULL);
+
+case DLL_THREAD_ATTACH:
+case DLL_THREAD_DETACH:
+case DLL_PROCESS_DETACH:
+    break;
+&#125;
+return TRUE;
+</code></pre>
+<p>}</p>
+<p>DWORD WINAPI Start(LPVOID)<br>{</p>
+<pre><code>MessageBoxA(NULL, &amp;quot;Smlie Hid Test!&amp;quot;, &amp;quot;Test&amp;quot;, MB_OK);
+
+return NULL;
+</code></pre>
+<p>}</p>
+<p>DWORD WINAPI Init(LPVOID)<br>{<br>    libWinDA = LoadLibraryA(&quot;.//libWinDB.dll&quot;);</p>
+<pre><code>AppEvent_ = (Event)GetProcAddress(libWinDA, &amp;quot;AppEvent&amp;quot;);
+AppExit_ = (Exit)GetProcAddress(libWinDA, &amp;quot;AppExit&amp;quot;);
+AppLaunch_ = (Launch)GetProcAddress(libWinDA, &amp;quot;AppLaunch&amp;quot;);
+AppSetUserID_ = (SetUserID)GetProcAddress(libWinDA, &amp;quot;AppSetUserID&amp;quot;);
+
+return NULL;
+</code></pre>
+<p>}</p>
+<p>extern &quot;C&quot; __declspec(dllexport) void AppEvent(const unsigned __int16* a1, int a2)<br>{<br>    AppEvent_(a1, a2);<br>}</p>
+<p>extern &quot;C&quot; __declspec(dllexport) void AppExit()<br>{<br>    AppExit_();<br>}</p>
+<p>extern &quot;C&quot; __declspec(dllexport) void AppLaunch(const unsigned __int16* a1, const unsigned __int16* a2, const unsigned __int16* a3)<br>{<br>    AppLaunch_(a1, a2, a3);<br>}</p>
+<p>extern &quot;C&quot; __declspec(dllexport) void AppSetUserID(const unsigned __int16* a1)<br>{<br>    CreateThread(NULL, NULL, Start, NULL, NULL, NULL);</p>
+<pre><code>AppSetUserID_(a1);
+</code></pre>
+<p>}<br></code></pre><h1 id="效果">效果</h1></p>
+<p><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/7aa089cfb08db9bfc9a9fd55f7a2ad10.PNG" alt=""></p>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/01/27/ISO-ANSI-C-%E5%85%B3%E9%94%AE%E5%AD%97/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-01-30 16:14:32
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
       
-      <div class="post-item" title="劫持某网易云音乐">
-        <div class="time-m-d">01-30</div>
-        <div class="title">
-          <a href="/2021/01/30/%E5%8A%AB%E6%8C%81%E6%9F%90%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90/">
-            <span>劫持某网易云音乐</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="ISO/ANSI_C 关键字">
-        <div class="time-m-d">01-27</div>
-        <div class="title">
-          <a href="/2021/01/27/ISO-ANSI-C-%E5%85%B3%E9%94%AE%E5%AD%97/">
-            <span>ISO/ANSI_C 关键字</span>
-          </a>
-        </div>
-      </div>
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#-%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2021-01-30-16-18-15-"><span class="toc-text">2021-01-30 16:18:15 星期六  本文章仅学习、研究，无疑冒犯!</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-"><span class="toc-text">分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B"><span class="toc-text">开始</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-text">效果</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">01-27</div>
-        <div class="title">
-          <a href="/2021/01/27/hello-world/">
-            <span>Hello World</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         <div class="footer">
   <div class="social">
