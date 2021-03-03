@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2021/1 
+      初识之fast_io 
       
       
       |
@@ -95,95 +95,119 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2021</span>
-          </h2>
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">初识之fast_io</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-03 19:02:15
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="什么是fast-io"><a href="#什么是fast-io" class="headerlink" title="什么是fast_io"></a>什么是fast_io</h1><p><strong>fast_io是用于快速输入/输出的新C ++ 20库，旨在取代iostream和cstdio。它仅是标头（以后仅提供模块），可轻松包含在您的项目中。它需要功能强大的C ++ 20编译器支持概念。</strong></p>
+<p><strong>官方仓库：<a target="_blank" rel="noopener" href="https://gitee.com/qabeowjbtkwb/fast_io">https://gitee.com/qabeowjbtkwb/fast_io</a></strong></p>
+<h1 id="编译器支持"><a href="#编译器支持" class="headerlink" title="编译器支持"></a>编译器支持</h1><ul>
+<li>GCC 11.您可以在此处下载适用于Windows的最新GCC编译器。<a target="_blank" rel="noopener" href="https://bitbucket.org/ejsvifq_mabmip/mingw-gcc/src/master/">https://bitbucket.org/ejsvifq_mabmip/mingw-gcc/src/master/</a> 对于Linux，您可以观看此视频，以帮助您轻松安装最新的GCC。<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=qFToZjo2x24">https://www.youtube.com/watch?v=qFToZjo2x24</a></li>
+<li>VS 19.28.29617</li>
+<li>带有GNU libstdc ++的Clang 12，包括Windows。libc ++尚无Clang语言，因为libc ++不支持概念和范围标头。</li>
+<li>带有msvc stl的Clang 12</li>
+<li>一切：Intel C ++编译器</li>
+</ul>
+<h1 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h1><p>通用I / O库，用于替换stdio.h和iostream</p>
+<ul>
+<li>尽可能接近系统调用。</li>
+<li>没有默认语言环境。它是可选的。</li>
+<li>去做。正确处理EBCDIC exec-charset（在没有libc正确处理的情况下）。</li>
+</ul>
+<h1 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h1><ul>
+<li>Windows 10 2004 专业工作站版</li>
+<li>GCC 11 (<a target="_blank" rel="noopener" href="https://gitee.com/qabeowjbtkwb/mingw-gcc)(%E6%AD%A4%E7%BC%96%E8%AF%91%E5%99%A8%E4%BB%A5%E9%9B%86%E6%88%90fast_io)">https://gitee.com/qabeowjbtkwb/mingw-gcc)(此编译器以集成fast_io)</a></li>
+</ul>
+<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h3 id="测试代码："><a href="#测试代码：" class="headerlink" title="测试代码："></a>测试代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fast_io.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	print(<span class="string">&quot;123\n&quot;</span>);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="编译参数："><a href="#编译参数：" class="headerlink" title="编译参数："></a>编译参数：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ test.cpp -<span class="built_in">std</span>=c++<span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/f75bebf0c471ed32f44c1b2a6a41c3d5.png"></p>
+<h4 id="大致意思是找不到”bit-cast”这个函数"><a href="#大致意思是找不到”bit-cast”这个函数" class="headerlink" title="大致意思是找不到”bit_cast”这个函数"></a>大致意思是找不到”bit_cast”这个函数</h4><h3 id="这里我提供了两个解决方案"><a href="#这里我提供了两个解决方案" class="headerlink" title="这里我提供了两个解决方案"></a>这里我提供了两个解决方案</h3><p><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/4c2e1555e1295892807d06cdc9f4a281.png"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="keyword">void</span>* handle=<span class="keyword">dynamic_cast</span>&lt;<span class="keyword">void</span>*&gt;(<span class="keyword">static_cast</span>&lt;<span class="built_in">std</span>::<span class="keyword">int64_t</span>&gt;(<span class="number">-1</span>));</span><br><span class="line"><span class="number">2.</span> <span class="keyword">void</span>* handle=<span class="keyword">dynamic_cast</span>&lt;<span class="keyword">void</span>*&gt;(<span class="number">-1</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="完美运行"><a href="#完美运行" class="headerlink" title="完美运行"></a>完美运行</h3><p><img src="https://cdn.jsdelivr.net/gh/YanYuHanYun/image/4b747dab0ee34d73e3fdfc399a028fed.png"></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/03/hello-world/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-03 19:02:15
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
       
-      <div class="post-item" title="初识之fast_io">
-        <div class="time-m-d">03-03</div>
-        <div class="title">
-          <a href="/2021/03/03/%E5%88%9D%E8%AF%86%E4%B9%8Bfast-io/">
-            <span>初识之fast_io</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">03-03</div>
-        <div class="title">
-          <a href="/2021/03/03/hello-world/">
-            <span>Hello World</span>
-          </a>
-        </div>
-      </div>
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFfast-io"><span class="toc-text">什么是fast_io</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E6%94%AF%E6%8C%81"><span class="toc-text">编译器支持</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="toc-text">设计目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8"><span class="toc-text">开始使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-text">测试代码：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8F%82%E6%95%B0%EF%BC%9A"><span class="toc-text">编译参数：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E8%87%B4%E6%84%8F%E6%80%9D%E6%98%AF%E6%89%BE%E4%B8%8D%E5%88%B0%E2%80%9Dbit-cast%E2%80%9D%E8%BF%99%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="toc-text">大致意思是找不到”bit_cast”这个函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E9%87%8C%E6%88%91%E6%8F%90%E4%BE%9B%E4%BA%86%E4%B8%A4%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">这里我提供了两个解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E7%BE%8E%E8%BF%90%E8%A1%8C"><span class="toc-text">完美运行</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="生活亦是生活">
-        <div class="time-m-d">02-08</div>
-        <div class="title">
-          <a href="/2021/02/08/%E7%94%9F%E6%B4%BB%E4%BA%A6%E6%98%AF%E7%94%9F%E6%B4%BB/">
-            <span>生活亦是生活</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="翻墙 之 V2rayN_4.8_Release">
-        <div class="time-m-d">02-01</div>
-        <div class="title">
-          <a href="/2021/02/01/V2rayN-4-8-Release/">
-            <span>翻墙 之 V2rayN_4.8_Release</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="VisualAssist_v10.9.2399_By.DFoX">
-        <div class="time-m-d">01-31</div>
-        <div class="title">
-          <a href="/2021/01/31/VisualAssist-v10-9-2399-By-DFoX/">
-            <span>VisualAssist_v10.9.2399_By.DFoX</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="GCC">
-        <div class="time-m-d">01-31</div>
-        <div class="title">
-          <a href="/2021/01/31/GCC/">
-            <span>GCC</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="劫持某网易云音乐">
-        <div class="time-m-d">01-30</div>
-        <div class="title">
-          <a href="/2021/01/30/%E5%8A%AB%E6%8C%81%E6%9F%90%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90/">
-            <span>劫持某网易云音乐</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="ISO/ANSI_C 关键字">
-        <div class="time-m-d">01-27</div>
-        <div class="title">
-          <a href="/2021/01/27/ISO-ANSI-C-%E5%85%B3%E9%94%AE%E5%AD%97/">
-            <span>ISO/ANSI_C 关键字</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         <div class="footer">
   <div class="social">
